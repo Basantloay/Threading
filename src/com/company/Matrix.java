@@ -91,4 +91,19 @@ public class Matrix implements Addable {
         else
             return null;
     }
+    public Matrix multiply(Matrix B){
+        
+    }
+
+    static final public class MultiplicationException extends Exception{
+        public String errorMessage;
+        MultiplicationException(String str)
+        {
+            errorMessage=str;
+        }
+        public void message()
+        {
+            System.out.println(errorMessage);
+        }
+    }
 }
