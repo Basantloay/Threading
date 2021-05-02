@@ -1,7 +1,7 @@
 package com.company;
 
 public class Matrix implements Addable {
-    public int numbers[][];
+    public int[][] numbers;
     public int m;//number of rows of the matrix
     public int n;// number of columns of the matrix
 
@@ -25,7 +25,7 @@ public class Matrix implements Addable {
     }
 
     public boolean setNumbers(int[] numbers1) {
-        if (numbers1.length !=m * n || numbers1.length % n != 0)
+        if (numbers1.length <m * n )//|| numbers1.length % n != 0)
             return false;
         else {
             int x = 0;
@@ -58,7 +58,7 @@ public class Matrix implements Addable {
                 {
                     for(int j=0;j<B.n;j++)
                     {
-                        for(int z=0;z<m;z++)
+                        for(int z=0;z<n;z++)
                             result.numbers[i][j]+=numbers[i][z]*B.numbers[z][j];
                     }
                 }
@@ -128,6 +128,6 @@ public class Matrix implements Addable {
         else
             return null;
     }
-    
+
 
 }
