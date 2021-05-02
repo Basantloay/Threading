@@ -1,20 +1,30 @@
 package com.company;
 
 public class Matrix implements Addable {
-    public double numbers[][];
+    public int numbers[][];
     public int m;//number of rows of the matrix
     public int n;// number of columns of the matrix
 
     public Matrix(int m, int n) {
         this.m = m;
         this.n = n;
-        this.numbers = new double[m][n];
+        this.numbers = new int[m][n];
     }
 
 
+    static final public class MultiplicationException extends Exception{
+        public String errorMessage;
+        MultiplicationException(String str)
+        {
+            errorMessage=str;
+        }
+        public void message()
+        {
+            System.out.println(errorMessage);
+        }
+    }
 
-
-    public boolean setNumbers(double[] numbers1) {
+    public boolean setNumbers(int[] numbers1) {
         if (numbers1.length !=m * n || numbers1.length % n != 0)
             return false;
         else {
@@ -39,6 +49,33 @@ public class Matrix implements Addable {
         System.out.println("**************");
     }
 
+    public Matrix multiply(Matrix B,String str1){
+        try {
+            if(n==B.m)
+            {
+                Matrix result=new Matrix(m,B.n);
+                for(int i=0;i<m;i++)
+                {
+                    for(int j=0;j<B.n;j++)
+                    {
+                        for(int z=0;z<m;z++)
+                            result.numbers[i][j]+=numbers[i][z]*B.numbers[z][j];
+                    }
+                }
+                return result;
+
+            }
+            else
+                throw new MultiplicationException(str1);
+        }
+        catch (MultiplicationException x) {
+            //x=new MultiplicationException(str1);
+            x.message();
+            return null;
+
+        }
+
+    }
 
     // this function has been taken from https://www.source-code.biz/snippets/java/3.htm
     private static Object resizeArray(Object oldArray, int newSize) {
@@ -56,15 +93,15 @@ public class Matrix implements Addable {
     public void transpose() {
         int mTemp = m;
         int ntemp = n;
-        double tempNumbers[][] = new double[m][n];
+        int tempNumbers[][] = new int[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 tempNumbers[i][j] = numbers[i][j];
             }
         }
-        numbers = (double[][]) resizeArray(numbers, ntemp);
+        numbers = (int[][]) resizeArray(numbers, ntemp);
         for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = (double[]) resizeArray(numbers[i], mTemp);
+            numbers[i] = (int[]) resizeArray(numbers[i], mTemp);
         }
         m = ntemp;
         n = mTemp;
@@ -91,19 +128,6 @@ public class Matrix implements Addable {
         else
             return null;
     }
-    public Matrix multiply(Matrix B){
-        
-    }
+    
 
-    static final public class MultiplicationException extends Exception{
-        public String errorMessage;
-        MultiplicationException(String str)
-        {
-            errorMessage=str;
-        }
-        public void message()
-        {
-            System.out.println(errorMessage);
-        }
-    }
 }
