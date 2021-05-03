@@ -54,7 +54,14 @@ public class MultiplicationThread implements Runnable {
         t1.setName("1");
         t2.setName("2");
         double start = System.currentTimeMillis();
-        t1.start(); t2.start();
+        try {
+            t1.start(); t2.start();
+        }
+        catch(Exception ex)
+        {
+
+        }
+
         t1.join(); t2.join(); // to wait until two threads two finish multiplication process to start next command(calculate Elapsed time)
         //temp.result.print();
         double current=System.currentTimeMillis()-start;
@@ -73,7 +80,14 @@ public class MultiplicationThread implements Runnable {
         t3.setName("1");
         t4.setName("2");
         start = System.currentTimeMillis();
-        t3.start(); t4.start();
+        try {
+            t3.start(); t4.start();
+        }
+        catch(Exception ex)
+        {
+
+        }
+
         t3.join(); t4.join(); // to wait until two threads two finish multiplication process to start next command(calculate Elapsed time)
 
         current=System.currentTimeMillis()-start;
