@@ -5,7 +5,7 @@ import java.util.Random;
 public class MultiplicationThread implements Runnable {
     private Matrix A;
     private Matrix B;
-    public Matrix result;
+    private Matrix result;
     MultiplicationThread(Matrix firstMatrix,Matrix secondMatrix){
         A=firstMatrix;
         B=secondMatrix;
@@ -48,14 +48,15 @@ public class MultiplicationThread implements Runnable {
         int[] arr={1,2,3,4,5,6,7,8,9,10,11,12};
         m1.setNumbers(arr);
         m2.setNumbers(arr);
-
-        Thread t1 = new Thread (new MultiplicationThread(m1,m2));
-        Thread t2 = new Thread (new MultiplicationThread(m1,m2));
+        MultiplicationThread temp=new MultiplicationThread(m1,m2);
+        Thread t1 = new Thread (temp);
+        Thread t2 = new Thread (temp);
         t1.setName("1");
         t2.setName("2");
         double start = System.currentTimeMillis();
         t1.start(); t2.start();
         t1.join(); t2.join(); // to wait until two threads two finish multiplication process to start next command(calculate Elapsed time)
+        //temp.result.print();
         double current=System.currentTimeMillis()-start;
         System.out.println("Time Elapsed in millies in Multiplying m1 and m2: "+current);
         Matrix m4=new Matrix(500,500);
@@ -66,14 +67,17 @@ public class MultiplicationThread implements Runnable {
             arr2[i] = rd.nextInt();
         m4.setNumbers(arr2);
         m5.setNumbers(arr2);
-        Thread t3 = new Thread (new MultiplicationThread(m4,m5));
-        Thread t4 = new Thread (new MultiplicationThread(m4,m5));
+        MultiplicationThread temp2=new MultiplicationThread(m4,m5);
+        Thread t3 = new Thread (temp2);
+        Thread t4 = new Thread (temp2);
         t3.setName("1");
         t4.setName("2");
         start = System.currentTimeMillis();
         t3.start(); t4.start();
         t3.join(); t4.join(); // to wait until two threads two finish multiplication process to start next command(calculate Elapsed time)
+
         current=System.currentTimeMillis()-start;
+        //temp2.result.print();
         //re3.print();
         System.out.println("Time Elapsed in millies in Multiplying m4 and m5: "+current);
 

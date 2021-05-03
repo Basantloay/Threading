@@ -66,21 +66,28 @@ class Supplier implements Runnable {
     public void run(){
         doWork();
     }
-
+    /*
+     * TODO-5: How to make the supplier stop producing when it reaches maxCount,
+     *  without adding extra sleeps or busy waiting ?
+     *  Check Example 11 in the lab code examples.
+     */
     public void doWork () {
 
         while (true) {synchronized (this) {
-            /*
-             * TODO-5: How to make the supplier stop producing when it reaches maxCount,
-             *  without adding extra sleeps or busy waiting ?
-             *  Check Example 11 in the lab code examples.
-             */
-
                     if (b.getCount() < b.getMaxCount()) {
                         b.produce();
                         System.out.println(Thread.currentThread().getName() + " provided a book, total " + b.getCount());
                         notifyAll();
                     }
+                    /*else{
+
+                       try {
+                           wait();
+                       } catch (InterruptedException e)
+                       {
+                       }
+
+                    }*/
                     try {
                         Thread.sleep(200);
                     } catch (InterruptedException e) {
@@ -110,17 +117,17 @@ class StoreBranch implements Runnable {
     public void run() {
         doWork();
     }
+    /*
+     * TODO-8: How to make the store branch stop consuming when the store is empty,
+     *  without adding extra sleeps or busy waiting ?
+     *  Check Example 11 in lab code examples.
+     */
 
     public void doWork() {
 
         while (true) {
 
             synchronized (this.b) {
-            /*
-             * TODO-8: How to make the store branch stop consuming when the store is empty,
-             *  without adding extra sleeps or busy waiting ?
-             *  Check Example 11 in lab code examples.
-             */
 
                 if (b.getCount() > 0) {
                     b.consume();
@@ -129,12 +136,13 @@ class StoreBranch implements Runnable {
                 }
                 else
                     try {
+
                         wait();
                     } catch (InterruptedException e) {
                     }
 
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(20000);
                     } catch (InterruptedException e) {
                         System.out.println(Thread.currentThread().getName() + "is awaken");
                     }
