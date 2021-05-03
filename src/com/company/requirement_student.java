@@ -73,32 +73,33 @@ class Supplier implements Runnable {
      */
     public void doWork () {
 
-        while (true) {synchronized (this) {
-                    if (b.getCount() < b.getMaxCount()) {
-                        b.produce();
-                        System.out.println(Thread.currentThread().getName() + " provided a book, total " + b.getCount());
-                        notifyAll();
-                    }
-                    /*else{
-
+        while (true) {synchronized (this.b) {
+            if (b.getCount() < b.getMaxCount()) {
+                b.produce();
+                System.out.println(Thread.currentThread().getName() + " provided a book, total " + b.getCount());
+                this.b.notify();
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    System.out.println(Thread.currentThread().getName() + "is awaken");
+                }
+            }
+                    while(b.getCount() == b.getMaxCount())
                        try {
-                           wait();
+                           this.b.notify();
+                           this.b.wait();
+
                        } catch (InterruptedException e)
                        {
                        }
-
-                    }*/
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        System.out.println(Thread.currentThread().getName() + "is awaken");
                     }
-                }
-            }
+
         }
+        }
+    }
 
 
-}
+
 
 /*
  * TODO-6: Should the class StoreBranch extend any class or implement any interface?
@@ -129,24 +130,24 @@ class StoreBranch implements Runnable {
 
             synchronized (this.b) {
 
-                if (b.getCount() > 0) {
-                    b.consume();
-                    System.out.println(Thread.currentThread().getName() + " sold a book");
-
-                }
-                else
+                while (b.getCount() ==0) {
                     try {
+                        //this.notify();
+                        this.b.wait();
 
-                        wait();
                     } catch (InterruptedException e) {
                     }
-
-                    try {
-                        Thread.sleep(20000);
-                    } catch (InterruptedException e) {
-                        System.out.println(Thread.currentThread().getName() + "is awaken");
-                    }
                 }
+                b.consume();
+                System.out.println(Thread.currentThread().getName() + " sold a book");
+                this.b.notify();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    System.out.println(Thread.currentThread().getName() + "is awaken");
+                }
+
             }
         }
     }
+}
